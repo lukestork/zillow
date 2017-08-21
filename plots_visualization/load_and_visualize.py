@@ -16,15 +16,16 @@ import statistics as stats
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from ggplot import *
+
 #ggplot dumps a bunch of the stupidest data upon import, delete it for now
 del diamonds, chopsticks, meat, movies, mpg, mtcars, pageviews, pigeons, salmon
 
 
 
 #Load properties data from .csv file in workspace
-prop_data = pd.read_csv('/python_files_luke/zillow_datasets/properties_2016.csv')
+prop_data = pd.read_csv('/zillow_datasets/properties_2016.csv')
 #Load train log_error and dates data
-train_data = pd.read_csv('/python_files_luke/zillow_datasets/train_2016_v2.csv')
+train_data = pd.read_csv('/zillow_datasets/train_2016_v2.csv')
 
 
 #Simple plots for features just to get a feel
