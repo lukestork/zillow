@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Aug 13 21:35:12 2017
-
 @author: Luke
 """
 
@@ -16,14 +15,12 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 
 
-
 #load .csv files that were generated from write=1 in merge_drop_impute.py
 #Load preprocessed train data from .csv file in workspace
 merged_train_data = pd.read_csv('/python_files_luke/zillow_datasets/merged_train_data.csv')
 del merged_train_data['transactiondate']
 del merged_train_data['propertycountylandusecode']
 del merged_train_data['propertyzoningdesc']
-del merged_train_data['Unnamed: 0']
 
 #load training labels
 train_labels = pd.read_csv('/python_files_luke/zillow_datasets/train_labels.csv')
@@ -32,13 +29,9 @@ train_labels = pd.read_csv('/python_files_luke/zillow_datasets/train_labels.csv'
 submission_test_data= pd.read_csv('/python_files_luke/zillow_datasets/test_data.csv')
 del submission_test_data['propertycountylandusecode']
 del submission_test_data['propertyzoningdesc']
-del submission_test_data['Unnamed: 0']
 
 #Load sample submission for formatting
 sample_submission = pd.read_csv('/python_files_luke/zillow_datasets/sample_submission.csv')
-
-#Crude way of writing to .csv leaves unwanted column of old indices, drop them
-del train_labels['Unnamed: 0']
 
 #split into test/train sets
 X_train, X_test, y_train, y_test = train_test_split(merged_train_data, 
@@ -53,7 +46,18 @@ test_output=regr.predict(X_test)
 
 error=mean_absolute_error(y_test.values,test_output)
 
+#Use model to predict new errors
 submission_output=regr.predict(submission_test_data)
 
-#TODO
 #write submission output to sample_submission dataframe and save as .csv
+#Just repeat predictions across all dates for now
+sample_submission.iloc[:,[1]]=submission_output
+sample_submission.iloc[:,[2]]=submission_output
+sample_submission.iloc[:,[3]]=submission_output
+sample_submission.iloc[:,[4]]=submission_output
+sample_submission.iloc[:,[5]]=submission_output
+sample_submission.iloc[:,[6]]=submission_output
+
+#Write submission to .csv
+sample_submission.to_csv('test_submission.csv', header='True', index=False)
+

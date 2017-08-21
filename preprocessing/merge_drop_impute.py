@@ -23,7 +23,6 @@ train_data = pd.read_csv('/python_files_luke/zillow_datasets/train_2016_v2.csv')
 
 ##
 #Gets into feature selection, dropping columns etc.
-#The below section should probably end up before the test train split, can be modified later
 ##
 
 #Features are frequently nan, sometimes entire columns calculate percent
@@ -33,7 +32,7 @@ missing_data = pd.DataFrame(prop_data.isnull().sum() / float(len(prop_data)),col
 missing_data.sort_values(by='nan_pct',ascending=False).head(num_cols)
 
 #Get the indices of features that have above %70 missing and remove them 
-bad_feature_indices=np.where(missing_data.nan_pct > .7)
+bad_feature_indices=np.where(missing_data.nan_pct > .5)
 prop_data.drop(prop_data.columns[list(bad_feature_indices)],axis=1,inplace=True)
 
 
@@ -69,17 +68,3 @@ if write==1:
 
 all_labels.to_csv('train_labels.csv', header='True')
 
-
-
-
-
-#I thought this was right at the time, but now I think it's useless...
-##Many thousand rows contain all nan with just parcelid
-##Just get the indices for these rows for now
-#num_cols=len(prop_data.columns)
-#nan_list=prop_data.isnull().sum(axis=1).tolist()
-#nan_array= np.asarray(nan_list)
-#all_nan_indices=np.where(nan_array >= num_cols-1)
-#
-##Remove nans from prop_data using all_nan_indices
-#reduced_properties=prop_data.drop(prop_data.index[list(all_nan_indices)])
